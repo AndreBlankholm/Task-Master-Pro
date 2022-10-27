@@ -58,14 +58,50 @@ $(".list-group").on("blur", "textarea", function () {
   var text = $(this).val().trim();
 
   // get the parent ul's id attribute
-  var status = $(this).closest(".list-group").attr("id").replace("list-", ""); //returns an array (e.g., toDo).
+  var status = $(this).closest(".list-group").attr("id").replace("list-", "");
 
   // get the task's position in the list of other li elements
-  var index = $(this).closest(".list-group-item").index(); // returns the object at the given index in the array.
+  var index = $(this).closest(".list-group-item").index();
 
-  tasks[status][index].text = text; //returns the text property of the object at the given index.
+  tasks[status][index].text = text;
+
   saveTasks(); // update immediately afterwards
+
+  // recreate p element
+  var taskP = $("<p>").addClass("m-1").text(text);
+
+  // replace textarea with p element
+  $(this).replaceWith(taskP);
 });
+
+
+
+// Due date was clicked
+$(".list-group").on("click", "span", function () {
+  //get current text
+  var date = $(this).text().trim();
+
+  // create new input element
+  var dateInput = $("<input>")
+    .attr("type", "text")
+    .addClass("form-control")
+    .val(date);
+
+  // swap out elements
+  $(this).replaceWith(dateInput);
+
+  // automatically focus on new element
+  dateInput.trigger("focus");
+});
+
+// Value of due date was changed
+$(".list-group").on("blur", "input[type='text']", function() {
+  //get current text
+  var date = $(this)
+    .val()
+    .trim()
+
+})
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function () {
